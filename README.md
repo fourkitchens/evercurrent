@@ -1,20 +1,20 @@
-# Ricochet Maintenance Client module
+# Ricochet Maintenance Helper module
 
 Install this module to be able to communicate the site's update status
 with the Ricochet Maintenance server (RMS) at {SERVER_URL tbd}.
 
 ### To install:
 
-- Enable the RMC module on you site
+- Enable the Ricochet Maintenance Helper module on you site
 - Set up a site on the RMS server
-- Fill in your API key in the settings form at admin/config/rmc, or in your settings.php file.
+- Fill in your API key in the settings form at admin/config/ricochet_maintenance_helper, or in your settings.php file.
 
 ### Put the API key in settings.php:
 If you are using development and testing environments in addition to your production site, 
 you should make sure to place the API key inside your site's settings.php file. To do that,
 insert your API key in settings.php using the following line:
  
-        $conf['rmc_environment_token'] = 'your-api-key'
+        $conf['ricochet_maintenance_helper_environment_token'] = 'your-api-key'
     
 Replace your-api-key with your actual API key.
 Once there, the module will automatically start using this API key.
