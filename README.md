@@ -1,7 +1,7 @@
 # Ricochet Maintenance Helper module
 
 Install this module to be able to communicate the site's update status
-with the Ricochet Maintenance server (RMS) at {SERVER_URL tbd}.
+with the Ricochet Maintenance server (RMS) at https://maintenance.projectricochet.com
 
 ### To install:
 
