@@ -114,7 +114,10 @@ function ricochet_maintenance_helper_send_update_submit($form, $form_state) {
   $values = $form_state['values'];
   if ($values['ricochet_maintenance_helper_send_now'] == TRUE) {
     // Specify the key if override is checked, to use the newly entered key.
-    $key = $values['ricochet_maintenance_helper_override'] ? $values['ricochet_maintenance_helper_key'] : NULL;
+    $key = NULL;
+    if (isset($values['ricochet_maintenance_helper_override'])){
+      $key = $values['ricochet_maintenance_helper_override'] ? $values['ricochet_maintenance_helper_key'] : NULL;
+    }
     module_load_include('inc', 'ricochet_maintenance_helper', 'ricochet_maintenance_helper.send');
     if (ricochet_maintenance_helper_run_update_check($key)) {
       drupal_set_message('Triggered an update to the server.');
