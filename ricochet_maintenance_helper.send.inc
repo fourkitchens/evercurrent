@@ -36,6 +36,10 @@ function ricochet_maintenance_helper_run_update_check($key = NULL) {
   foreach ($data as $module => $module_info) {
     if (in_array($module_info['status'], $status_list, NULL)) {
       $sender_data['updates'][$module] = $data[$module];
+      // In some cases (like multisite installations),
+      // modules on certain paths are considered unimportant.
+      $module_path = str_replace('/' . $module, '', drupal_get_path('module', $module));
+      $sender_data['updates'][$module]['module_path'] = $module_path;
     }
   }
 
