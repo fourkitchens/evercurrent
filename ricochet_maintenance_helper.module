@@ -5,7 +5,7 @@
  */
 
 // @todo RMP-199 Use single quotes instead of double quotes when possible.
-define('RMH_ENV_URL', 'http://maintenance.projectricochet.com');
+define('RMH_ENV_URL', 'https://maintenance.projectricochet.com');
 define('RMH_API_VERSION', 1);
 define('RMH_MD5_MATCH', '/^[a-f0-9]{32}$/i');
 define('RMH_URL', '/ricochet-maintenance/post-update');
