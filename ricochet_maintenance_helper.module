@@ -130,9 +130,9 @@ function ricochet_maintenance_helper_requirements($phase) {
   // Listening enabled?
   $listen = variable_get('ricochet_maintenance_helper_listen', FALSE);
   $listen_on_text = t(
-    'The maintenance client is listening for a key to use. You should finish
-    configuration on the server side, or turn the listening feature off in the
-    settings.'
+    'The Ricochet Maintenance Helper module is listening for a key to use.
+You should finish configuration on the server side,
+or turn the listening feature off in the settings.'
   );
   $requirements['ricochet_maintenance_helper_listen'] = array(
     'title' => t('Ricochet Maintenance: Listening Mode'),
