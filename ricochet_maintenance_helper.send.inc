@@ -50,6 +50,17 @@ function ricochet_maintenance_helper_run_update_check($key = NULL) {
   $versions = system_get_info('module', 'ricochet_maintenance_helper');
   $sender_data['module_version'] = $versions['version'];
 
+
+  // Send active module data, to allow us to act on uninstalled modules
+  $sender_data['enabled'] = module_list();
+
+  // Retrieve active theme data
+  $themes = list_themes(TRUE);
+  foreach($themes AS $theme) {
+    $machine_name = $theme->name;
+    $sender_data['enabled'][$machine_name] = $machine_name;
+  }
+
   // Expose hook to add anything else.
   drupal_alter('ricochet_maintenance_helper_update_data', $sender_data);
 
