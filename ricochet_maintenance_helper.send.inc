@@ -18,7 +18,7 @@ function ricochet_maintenance_helper_run_update_check($key = NULL) {
   global $base_url;
   $sender_data = array(
     'send_url' => variable_get('ricochet_maintenance_helper_target_address', RMH_ENV_URL),
-    'project_name' => variable_get('ricochet_maintenance_helper_project_name', $base_url),
+    'project_name' => _ricochet_maintenance_helper_get_environment_url(),
     'key' => $key,
     'module_version' => '0',
     'api_version' => '0',
@@ -133,4 +133,22 @@ function _ricochet_maintenance_helper_write_status($severity, $message) {
   if ($severity == RMH_STATUS_OK) {
     variable_set(RMH_LAST_TRY, time());
   }
+}
+
+/**
+ * Helper function.
+ *
+ * Get an environment URL and ship together with the results.
+ * First we see if we have our own explicit variable set. This
+ * is only used for this purpose, and it allows the module
+ * to be flexible in terms of determining the correct environment.
+ *
+ * If we do not find this variable, we fallback to the $base url.
+ */
+function _ricochet_maintenance_helper_get_environment_url() {
+  global $base_url;
+  $env_url = variable_get('ricochet_maintenance_helper_environment_url');
+  // If env_url, send that.
+  $url = $env_url ? $env_url : $base_url;
+  return $url;
 }
