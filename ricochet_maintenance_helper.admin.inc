@@ -106,11 +106,19 @@ function ricochet_maintenance_helper_settings_form() {
     '#weight' => 10
   );
   $form['#submit'][] = 'ricochet_maintenance_helper_send_update_submit';
+  $form['actions'] = array(
+    'submit' => array(
+      '#type' => 'submit',
+      '#value' => t('Save configuration')
+    ),
+    '#weight' => 100
+  );
 
-  return system_settings_form($form);
+  return $form;
 }
 
 function ricochet_maintenance_helper_send_update_submit($form, $form_state) {
+  system_settings_form_submit($form, $form_state);
   $values = $form_state['values'];
   if ($values['ricochet_maintenance_helper_send_now'] == TRUE) {
     // Specify the key if override is checked, to use the newly entered key.
