@@ -1,9 +1,9 @@
 <?php
 
-function ricochet_maintenance_helper_run_update_check($key = NULL) {
-  $key = $key ?: _ricochet_maintenance_helper_get_key();
+function evercurrent_run_update_check($key = NULL) {
+  $key = $key ?: _evercurrent_get_key();
   if (!$key) {
-    _ricochet_maintenance_helper_write_status(RMH_STATUS_WARNING, 'RMH Update check not run. No key');
+    _evercurrent_write_status(RMH_STATUS_WARNING, 'Update check not run. No key');
     return FALSE;
   }
   if ($available = update_get_available(TRUE)) {
@@ -11,14 +11,14 @@ function ricochet_maintenance_helper_run_update_check($key = NULL) {
     $data = update_calculate_project_data($available);
   }
   else {
-    _ricochet_maintenance_helper_write_status(RMH_STATUS_WARNING, 'Unable to get available updates');
+    _evercurrent_write_status(RMH_STATUS_WARNING, 'Unable to get available updates');
     drupal_set_message('Unable to get available updates');
     return FALSE;
   }
   global $base_url;
   $sender_data = array(
-    'send_url' => variable_get('ricochet_maintenance_helper_target_address', RMH_ENV_URL),
-    'project_name' => _ricochet_maintenance_helper_get_environment_url(),
+    'send_url' => variable_get('evercurrent_target_address', RMH_ENV_URL),
+    'project_name' => _evercurrent_get_environment_url(),
     'key' => $key,
     'module_version' => '0',
     'api_version' => '0',
@@ -47,7 +47,7 @@ function ricochet_maintenance_helper_run_update_check($key = NULL) {
   $sender_data['api_version'] = 2;
 
   // Module version
-  $versions = system_get_info('module', 'ricochet_maintenance_helper');
+  $versions = system_get_info('module', 'evercurrent');
   $sender_data['module_version'] = $versions['version'];
 
 
@@ -62,9 +62,9 @@ function ricochet_maintenance_helper_run_update_check($key = NULL) {
   }
 
   // Expose hook to add anything else.
-  drupal_alter('ricochet_maintenance_helper_update_data', $sender_data);
+  drupal_alter('evercurrent_update_data', $sender_data);
 
-  $response = _ricochet_maintenance_helper_send_updates($sender_data);
+  $response = _evercurrent_send_updates($sender_data);
   return $response;
 }
 
@@ -73,16 +73,16 @@ function ricochet_maintenance_helper_run_update_check($key = NULL) {
  *
  * Retrieve a key from settings.php, or from variable.
  */
-function _ricochet_maintenance_helper_get_key() {
-  $override = variable_get('ricochet_maintenance_helper_override', FALSE);
+function _evercurrent_get_key() {
+  $override = variable_get('evercurrent_override', FALSE);
   // Key from regular configuration
-  $config_key = variable_get('ricochet_maintenance_helper_environment_token', NULL);
+  $config_key = variable_get('evercurrent_environment_token', NULL);
   // Key from settings.php
-  $settings_key = variable_get('ricochet_maintenance_helper_key', NULL);
+  $settings_key = variable_get('evercurrent_key', NULL);
   return ($config_key && !$override) ? $config_key : $settings_key;
 }
 
-function _ricochet_maintenance_helper_send_updates($sender_data) {
+function _evercurrent_send_updates($sender_data) {
   $path = $sender_data['send_url'] . RMH_URL;
   $headers = array('Content-Type' => 'application/x-www-form-urlencoded');
   $data = drupal_json_encode($sender_data);
@@ -95,7 +95,7 @@ function _ricochet_maintenance_helper_send_updates($sender_data) {
   $response = drupal_http_request($path, $options);
 
   if ($response->code != 200) {
-    _ricochet_maintenance_helper_write_status(RMH_STATUS_ERROR, 'Error code ' . $response->code . ' when trying to post to ' . $path);
+    _evercurrent_write_status(RMH_STATUS_ERROR, 'Error code ' . $response->code . ' when trying to post to ' . $path);
   }
   else {
     // Check the response data, was it successful?
@@ -103,11 +103,11 @@ function _ricochet_maintenance_helper_send_updates($sender_data) {
     if ($response_data) {
       $saved = $response_data->saved;
       if (!$saved) {
-        _ricochet_maintenance_helper_write_status(RMH_STATUS_ERROR, check_plain($response_data->message));
+        _evercurrent_write_status(RMH_STATUS_ERROR, check_plain($response_data->message));
         return FALSE;
       }
       else {
-        _ricochet_maintenance_helper_write_status(RMH_STATUS_OK, $response_data->message);
+        _evercurrent_write_status(RMH_STATUS_OK, $response_data->message);
         return TRUE;
       }
     }
@@ -121,7 +121,7 @@ function _ricochet_maintenance_helper_send_updates($sender_data) {
  * @param $severity
  * @param $message
  */
-function _ricochet_maintenance_helper_write_status($severity, $message) {
+function _evercurrent_write_status($severity, $message) {
   $message = check_plain($message);
   variable_set(RMH_STATUS, $severity);
   variable_set(RMH_STATUS_MESSAGE, $message);
@@ -145,9 +145,9 @@ function _ricochet_maintenance_helper_write_status($severity, $message) {
  *
  * If we do not find this variable, we fallback to the $base url.
  */
-function _ricochet_maintenance_helper_get_environment_url() {
+function _evercurrent_get_environment_url() {
   global $base_url;
-  $env_url = variable_get('ricochet_maintenance_helper_environment_url');
+  $env_url = variable_get('evercurrent_environment_url');
   // If env_url, send that.
   $url = $env_url ? $env_url : $base_url;
   return $url;
