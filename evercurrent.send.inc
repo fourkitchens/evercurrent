@@ -50,7 +50,6 @@ function evercurrent_run_update_check($key = NULL) {
   $versions = system_get_info('module', 'evercurrent');
   $sender_data['module_version'] = $versions['version'];
 
-
   // Send active module data, to allow us to act on uninstalled modules
   $sender_data['enabled'] = module_list();
 
@@ -59,6 +58,15 @@ function evercurrent_run_update_check($key = NULL) {
   foreach($themes AS $theme) {
     $machine_name = $theme->name;
     $sender_data['enabled'][$machine_name] = $machine_name;
+  }
+
+  // Retrieve active installation profile data.
+  // We mark this as enabled send this if we are using an installation profile
+  // that the Update Manager module also reports on. Otherwise, Evercurrent
+  // will not tell us about updates for it.
+  $install_profile = variable_get('install_profile');
+  if ($install_profile && in_array($install_profile, array_keys($sender_data['updates']))) {
+    $sender_data['enabled'][$install_profile] = $install_profile;
   }
 
   // Expose hook to add anything else.
