@@ -24,7 +24,7 @@ especially if you are running multiple environments (like dev + stage + producti
 You can disable the server's validation of the URL, on your site settings at the Evercurrent Server. 
 This will make the server only validate your API key. 
 
-**Warning:** This may lead to the Evercurrent Server to accept updates from any dev environments you have that is configured with the key.
+**Warning:** This may lead to the Evercurrent Server to accept updates from any dev environments you have that are configured with the key.
 
 ### Configure key in settings.php
 You can also configure your key directly in settings.php:
