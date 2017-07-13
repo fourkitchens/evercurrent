@@ -36,7 +36,7 @@ function evercurrent_settings_form() {
       case letters and numbers. If you have development and staging environments,
       you should not store the API key in this field, but in your production
       environment's settings.php as follows:
-      <code>\$settings['evercurrent_environment_token'] = 'myapikey';</code>
+      <code>\$conf['evercurrent_environment_token'] = 'your-api-key';</code>
       This is important if you are using different environments. See this module's
       documentation for more information."),
     '#size' => 60,
