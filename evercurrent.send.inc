@@ -92,12 +92,12 @@ function _evercurrent_get_key() {
 
 function _evercurrent_send_updates($sender_data) {
   $path = $sender_data['send_url'] . RMH_URL;
-  $headers = array('Content-Type' => 'application/x-www-form-urlencoded');
+  $headers = array('Content-Type' => 'application/json');
   $data = drupal_json_encode($sender_data);
   $options = array(
     'headers' => $headers,
     'method' => 'POST',
-    'data' => http_build_query(array('data' => $data)),
+    'data' => json_encode($sender_data),
   );
 
   $response = drupal_http_request($path, $options);
